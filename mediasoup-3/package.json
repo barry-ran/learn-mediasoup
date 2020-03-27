@@ -1,0 +1,79 @@
+{
+  "name": "mediasoup",
+  "version": "3.5.5",
+  "description": "Cutting Edge WebRTC Video Conferencing",
+  "contributors": [
+    "Iñaki Baz Castillo <ibc@aliax.net> (https://inakibaz.me)",
+    "José Luis Millán <jmillan@aliax.net> (https://github.com/jmillan)"
+  ],
+  "homepage": "https://mediasoup.org",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/versatica/mediasoup.git"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/mediasoup"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [
+    "webrtc",
+    "ortc",
+    "sfu",
+    "nodejs"
+  ],
+  "engines": {
+    "node": ">=8.6.0"
+  },
+  "scripts": {
+    "typescript:build": "node npm-scripts.js typescript:build",
+    "typescript:watch": "node npm-scripts.js typescript:watch",
+    "lint": "npm run lint:node && npm run lint:worker",
+    "lint:node": "node npm-scripts.js lint:node",
+    "lint:worker": "node npm-scripts.js lint:worker",
+    "format:worker": "node npm-scripts.js format:worker",
+    "test": "npm run test:node && npm run test:worker",
+    "test:node": "npm run postinstall && node npm-scripts.js test:node",
+    "test:worker": "node npm-scripts.js test:worker",
+    "coverage": "npm run postinstall && node npm-scripts.js coverage",
+    "postinstall": "node npm-scripts.js postinstall"
+  },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "testRegex": "test/test.*\\.js"
+  },
+  "dependencies": {
+    "@types/debug": "^4.1.5",
+    "awaitqueue": "^2.1.1",
+    "debug": "^4.1.1",
+    "h264-profile-level-id": "^1.0.1",
+    "netstring": "^0.3.0",
+    "random-number": "^0.0.9",
+    "supports-color": "^7.1.0",
+    "uuid": "^7.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^13.9.3",
+    "@types/random-number": "0.0.0",
+    "@types/uuid": "^7.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-jest": "^23.8.2",
+    "gulp": "^4.0.2",
+    "gulp-clang-format": "^1.0.27",
+    "jest": "^25.1.0",
+    "jest-tobetype": "^1.2.3",
+    "open-cli": "^6.0.0",
+    "sctp": "^0.0.19",
+    "tsc-watch": "^4.2.3",
+    "typescript": "^3.8.3"
+  },
+  "optionalDependencies": {
+    "clang-tools-prebuilt": "^0.1.4"
+  }
+}
