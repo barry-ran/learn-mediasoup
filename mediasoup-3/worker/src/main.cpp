@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 
 	std::string version = std::getenv("MEDIASOUP_VERSION");
 
-	// Initialize libuv stuff (we need it for the Channel).
+	// 创建了一个libuv loop (we need it for the Channel).
 	DepLibUV::ClassInit();
 
 	// Channel socket (it will be handled and deleted by the Worker).
