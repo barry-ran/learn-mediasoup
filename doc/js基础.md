@@ -44,3 +44,20 @@
     定义了一个数组var arr = [1,2,3],则...a表示1,2,3 (也就是将arr展开放在这里)
 3. 导出模块 export.modules
     编写好一个模块可以用export.modules将其到处供其它模块使用，类似C语言中的库
+
+# Promise和EventEmitter
+
+## Promise
+![](image/promise.png)
+1. handle是肯定执行的逻辑，例如handle中执行发送http请求
+2. resolve是handle成功后执行的逻辑，例如http请求返回200
+3. reject是handle失败后的执行逻辑，例如http请求404等
+
+C++实现可以参考[这里](https://github.com/xhawk18/promise-cpp)
+
+## EventEmitter
+![](image/event-emitter.png)
+
+观察者模式，订阅者可以注册不同type的handler，观察者通过emit通知所有订阅者
+
+C++实现可以参考[这里](https://gist.github.com/martinfinke/a636dcddbcf112344b59)
