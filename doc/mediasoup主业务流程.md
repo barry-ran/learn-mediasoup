@@ -1,6 +1,6 @@
 # 主业务流程
 先来张图：
-![](doc/image/mediasoup-main-process.png)
+![](image/mediasoup-main-process.png)
 
 如图所示，在一个视频会议场景中，mediasoup的主要业务流程分为如下几步，上图中的每一步流程都是由mediasoup js端发送request给mediasoup C++端来触发的：
 1. createRouter --> Channel::Request::MethodId::WORKER_CREATE_ROUTER
