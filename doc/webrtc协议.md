@@ -49,6 +49,8 @@ NAT的中继穿越方式[Traversal Using Relays around NAT (TURN)](http://en.wik
 # SDP
 会话描述协议[Session Description Protocol (SDP)](http://en.wikipedia.org/wiki/Session_Description_Protocol) 是一个描述多媒体连接内容的协议，例如分辨率，格式，编码，加密算法等。所以在数据传输时两端都能够理解彼此的数据。本质上，这些描述内容的元数据并不是媒体流本身。
 
+[SDP带来的恐惧](https://webrtchacks.com/webrtc-sdp-inaki-baz-castillo/?__s=sgkgganpatrhthvch4js)
+
 # TLS
 传输层安全性协议（[Transport Layer Security](https://baike.baidu.com/item/TLS/2979545?fr=aladdin)），用于加密，保证传输安全，TLS是建立在传输层TCP协议之上的协议，服务于应用层，它的前身是SSL（Secure Socket Layer，安全套接字层），它实现了将应用层的报文进行加密后再交由TCP进行传输的功能。
 
