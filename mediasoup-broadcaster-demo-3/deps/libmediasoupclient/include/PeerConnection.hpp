@@ -113,7 +113,7 @@ namespace mediasoupclient
 
 		void Close();
 		webrtc::PeerConnectionInterface::RTCConfiguration GetConfiguration() const;
-		bool SetConfiguration2(const webrtc::PeerConnectionInterface::RTCConfiguration& config);
+		bool SetConfiguration(const webrtc::PeerConnectionInterface::RTCConfiguration& config);
 		std::string CreateOffer(const webrtc::PeerConnectionInterface::RTCOfferAnswerOptions& options);
 		std::string CreateAnswer(const webrtc::PeerConnectionInterface::RTCOfferAnswerOptions& options);
 		void SetLocalDescription(PeerConnection::SdpType type, const std::string& sdp);

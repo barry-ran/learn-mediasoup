@@ -125,12 +125,11 @@ namespace mediasoupclient
 		return this->pc->GetConfiguration();
 	}
 
-	bool PeerConnection::SetConfiguration2(const webrtc::PeerConnectionInterface::RTCConfiguration& config)
+	bool PeerConnection::SetConfiguration(const webrtc::PeerConnectionInterface::RTCConfiguration& config)
 	{
 		MSC_TRACE();
 
-		webrtc::RTCError error;
-		pc->SetConfiguration(config, &error);
+		webrtc::RTCError error = this->pc->SetConfiguration(config);
 
 		if (error.ok())
 		{

@@ -15,7 +15,6 @@ class Broadcaster : public mediasoupclient::SendTransport::Listener,
                     mediasoupclient::DataConsumer::Listener
 {
 public:
-	// 条件变量实现的可终止定时类
 	struct TimerKiller
 	{
 		// returns false if killed:
@@ -99,7 +98,6 @@ public:
 	~Broadcaster();
 
 private:
-	// 设备代表连接到mediasoup Router以发送和/或接收媒体的端点。
 	mediasoupclient::Device device;
 	mediasoupclient::SendTransport* sendTransport{ nullptr };
 	mediasoupclient::RecvTransport* recvTransport{ nullptr };

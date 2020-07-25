@@ -104,7 +104,7 @@ namespace mediasoupclient
 			configuration.servers.push_back(iceServer);
 		}
 
-		if (this->pc->SetConfiguration2(configuration))
+		if (this->pc->SetConfiguration(configuration))
 			return;
 
 		MSC_THROW_ERROR("failed to update ICE servers");

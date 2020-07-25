@@ -82,8 +82,6 @@ int main(int /*argc*/, char* /*argv*/[])
 	std::cout << "[INFO] welcome to mediasoup broadcaster app!\n" << std::endl;
 
 	std::cout << "[INFO] verifying that room '" << envRoomId << "' exists..." << std::endl;
-	// cpr：libcurl包装库
-	// 请求房间信息
 	auto r = cpr::GetAsync(cpr::Url{ baseUrl }, cpr::VerifySsl{ verifySsl }).get();
 
 	if (r.status_code != 200)

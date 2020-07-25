@@ -19,29 +19,10 @@ message("")
 
 # Add some compile flags to our source files.
 set_source_files_properties(${SOURCE_FILES}
-	PROPERTIES COMPILE_FLAGS -W1 -Wextra -Wpedantic)
+	PROPERTIES COMPILE_FLAGS -Wall -Wextra -Wpedantic)
 
 # Create target.
 add_executable(${PROJECT_NAME} ${SOURCES})
-
-target_compile_definitions(${PROJECT_NAME} PUBLIC
-$<$<PLATFORM_ID:Windows>:WEBRTC_WIN>
-$<$<PLATFORM_ID:Windows>:NOMINMAX>
-$<$<PLATFORM_ID:Windows>:WIN32_LEAN_AND_MEAN>
-$<$<PLATFORM_ID:Windows>:_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING>
-)
-
-if (MSVC)
-target_link_libraries(${PROJECT_NAME} PRIVATE
-winmm
-Secur32
-wmcodecdspuuid
-msdmo
-dmoguids
-Strmiids
-${LIBWEBRTC_BINARY_PATH}/libwebrtc${CMAKE_STATIC_LIBRARY_SUFFIX}
-)
-endif()
 
 # Extra libs required in order to use Apple media devices.
 if(APPLE)

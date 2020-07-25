@@ -268,8 +268,7 @@ void Broadcaster::Start(
 	this->baseUrl   = baseUrl;
 	this->verifySsl = verifySsl;
 
-	// routerRtpCapabilities是从信令服务器获取过来的mediasoup服务端的RtpCapabilities
-	// 使用它来load device
+	// Load the device.
 	this->device.Load(routerRtpCapabilities);
 
 	std::cout << "[INFO] creating Broadcaster..." << std::endl;
