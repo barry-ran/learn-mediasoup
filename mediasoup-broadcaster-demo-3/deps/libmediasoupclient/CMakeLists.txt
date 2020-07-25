@@ -93,6 +93,25 @@ set(
 # Create target.
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+$<$<PLATFORM_ID:Windows>:WEBRTC_WIN>
+$<$<PLATFORM_ID:Windows>:NOMINMAX>
+$<$<PLATFORM_ID:Windows>:WIN32_LEAN_AND_MEAN>
+)
+
+if (MSVC)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+winmm
+Secur32
+wmcodecdspuuid
+msdmo
+dmoguids
+Strmiids
+${LIBWEBRTC_BINARY_PATH}/webrtc${CMAKE_STATIC_LIBRARY_SUFFIX}
+)
+endif()
+
 if(${MEDIASOUPCLIENT_LOG_TRACE})
 	target_compile_definitions(${PROJECT_NAME}
 		PRIVATE MSC_LOG_TRACE=1
@@ -111,7 +130,7 @@ add_subdirectory(deps/libsdptransform "${CMAKE_CURRENT_BINARY_DIR}/libsdptransfo
 # Add some compile flags to our source files.
 if(MSVC)
 	set_source_files_properties(${SOURCE_FILES}
-		PROPERTIES COMPILE_FLAGS "/W3 /WX")
+		PROPERTIES COMPILE_FLAGS "/W3")
 else()
 	set_source_files_properties(${SOURCE_FILES}
 		PROPERTIES COMPILE_FLAGS -Wall -Wextra -Wpedantic)
@@ -130,7 +149,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 # Public (interface) dependencies.
 target_link_libraries(${PROJECT_NAME} PUBLIC
 	sdptransform
-	${LIBWEBRTC_BINARY_PATH}/libwebrtc${CMAKE_STATIC_LIBRARY_SUFFIX}
+	${LIBWEBRTC_BINARY_PATH}/webrtc${CMAKE_STATIC_LIBRARY_SUFFIX}
 )
 
 # Compile definitions for libwebrtc.

@@ -52,7 +52,7 @@ namespace mediasoupclient
 	class Logger
 	{
 	public:
-		enum class LogLevel : uint8_t
+		enum class LogLevel : int
 		{
 			LOG_NONE  = 0,
 			LOG_ERROR = 1,
