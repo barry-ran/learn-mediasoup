@@ -30,8 +30,8 @@ int main(int /*argc*/, char* /*argv*/[])
 	const char* envWebrtcDebug  = std::getenv("WEBRTC_DEBUG");
 	char* envVerifySsl    = std::getenv("VERIFY_SSL");
 
-	envServerUrl    = "https://192.168.159.1:3000";
-	envRoomId       = "ulpaeqjc";
+	envServerUrl    = "https://127.0.0.1:4443";
+	envRoomId       = "tuuwt4gq";
 	envVerifySsl    = "false";
 
 	if (envServerUrl == nullptr)
