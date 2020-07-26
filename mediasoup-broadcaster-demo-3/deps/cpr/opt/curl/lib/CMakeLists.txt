@@ -73,6 +73,13 @@ add_library(
   ${HHEADERS} ${CSOURCES}
   )
 
+if(CMAKE_USE_OPENSSL)
+  target_link_libraries(${LIB_NAME}
+        ssl
+        crypto
+    )
+endif()
+
 if(MSVC AND CURL_STATICLIB)
   set_target_properties(${LIB_NAME} PROPERTIES STATIC_LIBRARY_FLAGS ${CMAKE_EXE_LINKER_FLAGS})
 endif()

@@ -23,12 +23,16 @@ int main(int /*argc*/, char* /*argv*/[])
 	signal(SIGINT, signalHandler);
 
 	// Retrieve configuration from environment variables.
-	const char* envServerUrl    = std::getenv("SERVER_URL");
-	const char* envRoomId       = std::getenv("ROOM_ID");
+	char* envServerUrl    = std::getenv("SERVER_URL");
+	char* envRoomId       = std::getenv("ROOM_ID");
 	const char* envEnableAudio  = std::getenv("ENABLE_AUDIO");
 	const char* envUseSimulcast = std::getenv("USE_SIMULCAST");
 	const char* envWebrtcDebug  = std::getenv("WEBRTC_DEBUG");
-	const char* envVerifySsl    = std::getenv("VERIFY_SSL");
+	char* envVerifySsl    = std::getenv("VERIFY_SSL");
+
+	envServerUrl    = "https://192.168.159.1:3000";
+	envRoomId       = "ulpaeqjc";
+	envVerifySsl    = "false";
 
 	if (envServerUrl == nullptr)
 	{

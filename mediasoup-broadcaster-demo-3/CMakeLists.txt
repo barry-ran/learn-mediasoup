@@ -21,8 +21,15 @@ message("")
 set_source_files_properties(${SOURCE_FILES}
 	PROPERTIES COMPILE_FLAGS -W1 -Wextra -Wpedantic)
 
+if (MSVC)
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
+endif()
+
 # Create target.
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
 $<$<PLATFORM_ID:Windows>:WEBRTC_WIN>

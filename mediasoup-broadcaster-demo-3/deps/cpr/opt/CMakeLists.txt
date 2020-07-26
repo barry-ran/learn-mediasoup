@@ -35,6 +35,12 @@ if(BUILD_CPR_TESTS AND GENERATE_COVERAGE)
         CMAKE_SHARED_LINKER_FLAGS_COVERAGE)
 endif()
 
+if(CMAKE_USE_OPENSSL)
+  # add openssl no need app 
+  set(WITH_APPS OFF CACHE INTERNAL "")
+  add_subdirectory(openssl)
+  unset(WITH_APPS)
+endif()
 
 # Curl configuration
 
