@@ -29,9 +29,14 @@ int main(int /*argc*/, char* /*argv*/[])
 	const char* envUseSimulcast = std::getenv("USE_SIMULCAST");
 	const char* envWebrtcDebug  = std::getenv("WEBRTC_DEBUG");
 	char* envVerifySsl    = std::getenv("VERIFY_SSL");
-
-	envServerUrl    = "https://127.0.0.1:4443";
-	envRoomId       = "tuuwt4gq";
+#if 1
+	// https://v3demo.mediasoup.org/?roomId=bd
+	envServerUrl    = "https://v3demo.mediasoup.org:4443";	
+#else
+	// https://localhost:3000/?roomId=bd
+	envServerUrl = "https://127.0.0.1:4443";
+#endif
+	envRoomId = "bd";
 	envVerifySsl    = "false";
 
 	if (envServerUrl == nullptr)
