@@ -1,0 +1,40 @@
+@startuml
+main -> main: mediasoupclient::Initialize初始化
+main -> main: cpr::GetRtpCapabilities获取服务端rtp信息
+main -> Broadcaster: Start
+Broadcaster -> Device: Load设置rtp信息
+Broadcaster -> Device: GetRtpCapabilities获取本地rtp信息
+Device -> Broadcaster: 返回本地rtp信息
+Broadcaster -> Broadcaster: cpr上传本地信息到服务端（id,name,rtp,version）
+
+Broadcaster -> Device: GetSctpCapabilities获取sctp信息
+activate Broadcaster
+Device -> Broadcaster: 返回本地sctp信息
+Broadcaster -> Broadcaster: cpr申请服务端创建webrtc transports
+Broadcaster -> Device: CreateSendTransport本地创建webrtc发送传输
+Device -> Broadcaster: 返回SendTransport
+Broadcaster -> Device: CanProduce("audio")判断是否能生产音频
+Broadcaster -> webrtc: CreateAudioSource&CreateAudioTrack创建音频源&音频轨道
+webrtc -> Broadcaster: 返回AudioTrackInterface
+Broadcaster -> SendTransport: Produce开始生产音频
+Broadcaster -> Device: CanProduce("video")判断是否能生产视频
+Broadcaster -> webrtc: FrameGeneratorCapturerVideoTrackSource&CreateVideoTrack创建视频源&视频轨道
+Broadcaster -> SendTransport: Produce开始生产视频
+Broadcaster -> SendTransport: ProduceData创建普通数据生产着
+SendTransport -> Broadcaster: 返回DataProducer
+Broadcaster -> DataProducer: 开启线程循环Send发送数据
+deactivate Broadcaster
+
+Broadcaster -> Device: GetSctpCapabilities获取sctp信息
+activate Broadcaster
+Device -> Broadcaster: 返回本地sctp信息
+Broadcaster -> Broadcaster: cpr申请服务端创建webrtc transports
+Broadcaster -> Device: CreateSendTransport本地创建webrtc发送传输
+Device -> Broadcaster: 返回RecvTransport
+Broadcaster -> DataProducer: GetId获取数据生产者id
+DataProducer -> Broadcaster: 返回数据生产者id
+Broadcaster -> Broadcaster: cpr申请服务端创建数据消费者
+Broadcaster -> RecvTransport: ConsumeData创建数据消费者
+RecvTransport-> Broadcaster : 返回DataConsumer
+deactivate Broadcaster
+@enduml
