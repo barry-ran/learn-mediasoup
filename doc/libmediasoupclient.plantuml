@@ -1,0 +1,34 @@
+@startuml libmediasoupclient
+class PeerConnection {
+    对webrtc PeerConnectionInterface常用操作的封装
+    ---
+    - PeerConnectionFactoryInterface 负责创建PeerConnectionInterface的工厂 
+    - PeerConnectionInterface pc PeerConnectionInterface实例
+    ---
+    + Get/SetConfiguration() 获取设置PeerConnectionInterface配置
+    + CreateOffer() webrtc同名接口封装（将SessionDescriptionInterface转换为string返回）
+    + CreateAnswer() 同上
+    + Set/GetLocalDescription() 同上（封装了string格式的sdp信息和SessionDescriptionInterface的转换）
+    + Set/GetRemoteDescription() 同上
+    + AddTransceiver() webrtc同名接口封装
+    + CreateDataChannel() webrtc同名接口封装
+}
+
+class Handler {
+    对PeerConnection进一步封装
+    ---
+    + GetNativeRtpCapabilities() 通过临时创建一个offer的方式获得本地rtp能力
+    + UpdateIceServers() 重新设置PeerConnection的ice server
+}
+
+class SendHandler {
+    aaa
+    ---
+    + Send() 给PeerConnection添加MediaStreamTrackInterface，创建offer，设置本地/远端sdp信息
+    + SendDataChannel() 创建DataChannel，创建offer，设置本地/远端sdp信息
+}
+
+Handler *-- PeerConnection
+SendHandler --|> Handler
+
+@enduml
