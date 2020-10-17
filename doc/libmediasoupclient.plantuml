@@ -1,4 +1,120 @@
-@startuml libmediasoupclient
+@startuml
+class Device {
+    代表连接到mediasoup router以发送和/或接收媒体的端点。
+    这是C ++客户端应用程序的切入点。
+    主要功能是创建SendTransport/RecvTransport, 加载服务端rtp能力，生成本地rtp能力等
+    https://mediasoup.org/documentation/v3/libmediasoupclient/api/#Device
+    ---
+    + CreateSendTransport()
+    + CreateRecvTransport()
+}
+
+class Handler {
+    对PeerConnection进一步封装，区分offer/answer PeerConnection
+    ---
+    + GetNativeRtpCapabilities() 通过临时创建一个offer的方式获得本地rtp能力
+    + UpdateIceServers() 重新设置PeerConnection的ice server
+    + Close() 关闭PeerConnection
+    ---
+    - SetupTransport() 更新sdp信息中 dtls传输角色（client/server）
+}
+
+class RecvHandler {
+    创建answer类型的PeerConnectionInterface，返回RtpReceiverInterface和MediaStreamTrackInterface
+    ---
+    + Receive() 根据参数使用remoteSdp创建远端sdp，并通过SetRemoteDescription设置到pc，创建answer，获取transceiver和track，设置本地sdp信息
+    + ReceiveDataChannel() 创建DataChannel，创建answer，设置本地/远端sdp信息
+}
+
+class MediaSection {
+    媒体部分json数据的封装
+    主要是对json格式的iceParameters（user&password）和iceCandidates的保存和便捷操作
+    ---
+    + GetMid()
+    + SetIceParameters()
+    + SetDtlsRole()
+}
+
+class AnswerMediaSection {
+    应答媒体部分json数据的封装
+    主要是对json格式的iceParameters/iceCandidates/dtlsParameters/sctpParameters/codecOptions的保存
+    ---
+}
+
+class OfferMediaSection {
+    应答媒体部分json数据的封装
+    主要是对json格式的iceParameters/iceCandidates/dtlsParameters/sctpParameters/codecOptions的保存
+    ---
+}
+
+class RemoteSdp {
+    保存json格式的sdp信息，管理MediaSection
+    Remote表示RemoteSdp存储的是对端pc的sdp信息，最终RemoteSdp被用来本地PeerConnectionInterface::SetRemoteDescription
+    ---
+    + Send()创建一个AnswerMediaSection
+    + Receive()创建一个OfferMediaSection 
+    + GetSdp() 获取sdp信息的json对象
+}
+
+class Transport {
+    Transport表示mediasoupclient端的WebRtcTransport，和mediasoup服务端WebRtcTransport一一对应。
+    WebRtcTransport在媒体级别将mediasoupclient设备与mediasoup router连接，并允许发送媒体（通过Producer实例）
+    或接收媒体（通过Consumer实例）。
+
+    在内部，实际封装的是一个WebRTC RTCPeerConnection实例（通过Handler）
+    https://mediasoup.org/documentation/v3/libmediasoupclient/api/#Transport
+    ---
+}
+
+class SendTransport {
+    继承自Transport，表示发送媒体的Transport
+    可以创建Producer来生产媒体数据
+    https://mediasoup.org/documentation/v3/libmediasoupclient/api/#SendTransport
+    ---
+}
+
+class RecvTransport {
+    继承自Transport，表示接收媒体的Transport
+    可以创建Consumer来处理媒体数据
+    https://mediasoup.org/documentation/v3/libmediasoupclient/api/#RecvTransport
+    ---
+}
+
+class Producer {
+    表示通过WebRTC transport传输到mediasoup router的音频/视频生产者
+    主要是通过持有MediaStreamTrackInterface来控制媒体的发送/暂停/恢复/关闭
+    https://mediasoup.org/documentation/v3/libmediasoupclient/api/#Producer
+    ---
+}
+
+class DataProducer {
+    表示通过WebRTC transport传输到mediasoup router的普通数据生产者
+    主要通过持有DataChannelInterface实现了数据的发送等
+    https://mediasoup.org/documentation/v3/libmediasoupclient/api/#DataProducer
+    ---
+}
+
+class SendHandler {
+    创建offer类型的PeerConnectionInterface，返回RtpSenderInterface和rtpParameters
+    ---
+    + Send() 给PeerConnection添加MediaStreamTrackInterface，创建offer，设置本地/远端sdp信息(远端sdp信息也是在本地创建的，之前从服务端拉取了必要的远端信息)
+    + SendDataChannel() 创建DataChannel，创建offer，设置本地/远端sdp信息(远端sdp信息也是在本地创建的，之前从服务端拉取了必要的远端信息)
+}
+
+class Consumer {
+    表示mediasoup router通过WebRTC transport传输到本地的音频/视频的消费者
+    主要是通过持有MediaStreamTrackInterface来控制媒体的接收/暂停/恢复/关闭
+    https://mediasoup.org/documentation/v3/libmediasoupclient/api/#Consumer
+    ---
+}
+
+class DataConsumer {
+    表示mediasoup router通过WebRTC transport传输到本地的普通数据消费者
+    主要通过持有DataChannelInterface实现了数据的发送等
+    https://mediasoup.org/documentation/v3/libmediasoupclient/api/#DataConsumer
+    ---
+}
+
 class PeerConnection {
     对webrtc PeerConnectionInterface常用操作的封装
     ---
@@ -14,21 +130,22 @@ class PeerConnection {
     + CreateDataChannel() webrtc同名接口封装
 }
 
-class Handler {
-    对PeerConnection进一步封装
-    ---
-    + GetNativeRtpCapabilities() 通过临时创建一个offer的方式获得本地rtp能力
-    + UpdateIceServers() 重新设置PeerConnection的ice server
-}
+Handler *-right- PeerConnection
+Handler *-- RemoteSdp
+SendHandler -down-|> Handler
+RecvHandler -down-|> Handler
+AnswerMediaSection -up-|> MediaSection
+OfferMediaSection -up-|> MediaSection
+RemoteSdp *-down- MediaSection 
+SendTransport --|> Transport
+RecvTransport --|> Transport
+SendTransport *-- SendHandler
+SendTransport *-- Producer
+SendTransport *-- DataProducer
+RecvTransport *-- RecvHandler
+RecvTransport *-- Consumer
+RecvTransport *-- DataConsumer
 
-class SendHandler {
-    aaa
-    ---
-    + Send() 给PeerConnection添加MediaStreamTrackInterface，创建offer，设置本地/远端sdp信息
-    + SendDataChannel() 创建DataChannel，创建offer，设置本地/远端sdp信息
-}
-
-Handler *-- PeerConnection
-SendHandler --|> Handler
-
+Device -- SendTransport : 创建
+Device -- RecvTransport : 创建
 @enduml
